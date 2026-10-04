@@ -11,22 +11,34 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Compile and release
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
 
       - name: Checkout current branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v7
         with:
-          root_file: hypergeometric.tex
+          # Cache the standard store and its database, keyed by the toolchain.
+          primary-key: nix-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('flake.nix', 'flake.lock') }}
+          restore-prefixes-first-match: nix-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Compile LaTeX document
+        run: nix develop --no-update-lock-file --command make build
 
       - name: Create tag name
         if: github.ref == 'refs/heads/main'
@@ -42,9 +54,9 @@ jobs:
 
       - name: Create Github Release
         if: github.ref == 'refs/heads/main'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.release_tag }}
           draft: false
           prerelease: false
-          files: hypergeometric.pdf 
+          files: hypergeometric.pdf

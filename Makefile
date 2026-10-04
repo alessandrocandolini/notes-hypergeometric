@@ -1,5 +1,8 @@
-all: hypergeometric.pdf
+.PHONY: build clean
 
+build:
+	latexmk -g -pdf -interaction=nonstopmode -halt-on-error hypergeometric.tex
 
-hypergeometric.pdf: hypergeometric.tex Chapters/*.tex FrontBackmatter/*.tex myBibliography9.bib
-	latexmk -pdflatex hypergeometric.tex
+clean:
+	$(RM) $(filter-out hypergeometric.tex,$(wildcard hypergeometric*)) \
+		$(filter-out %.tex,$(wildcard Chapters/* FrontBackmatter/*))
