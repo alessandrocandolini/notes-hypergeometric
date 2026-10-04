@@ -87,20 +87,21 @@ natbib,ibidtracker=false]{biblatex}
 
 
 % ********************************************************************
-% hyperref
+% Hyperlinks and PDF navigation
 % ********************************************************************
-\hypersetup{%
-    colorlinks=true, linktocpage=true, pdfstartpage=1, pdfstartview=FitV,%
-    breaklinks=true, pdfpagemode=UseNone, pageanchor=true, pdfpagemode=UseOutlines,%
-    plainpages=false, bookmarksnumbered, bookmarksopen=true, bookmarksopenlevel=1,%
-    hypertexnames=true, pdfhighlight=/O,%
-    urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=RoyalBlue,citecolor=webgreen,
-    pdftitle={\myTitle},%
-    pdfauthor={\textcopyright\ \myName},%
-    pdfsubject={},%
-    pdfkeywords={},%
-    pdfcreator={pdfLaTeX},%
-    pdfproducer={LaTeX con hyperref e ClassicThesis}%
+% hyperref is loaded by classicthesis.
+\hypersetup{
+    colorlinks=true, linktocpage=true,
+    urlcolor=webbrown, linkcolor=RoyalBlue, citecolor=webgreen,
+    pdfstartpage=1, pdfstartview=FitV, pdfpagemode=UseOutlines,
+    bookmarksnumbered=true, bookmarksopen=true, bookmarksopenlevel=1,
+    breaklinks=true, pageanchor=true, plainpages=false,
+    hypertexnames=true, pdfhighlight=/O,
+    pdftitle={\myTitle},
+    pdfauthor={\textcopyright\ \myName},
+    pdfsubject={}, pdfkeywords={},
+    pdfcreator={pdfLaTeX},
+    pdfproducer={LaTeX con hyperref e ClassicThesis}
 }
 
 \newcommand{\mail}[1]{\href{mailto:#1}{\texttt{#1}}}
