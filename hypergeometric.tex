@@ -67,15 +67,20 @@ natbib,ibidtracker=false]{biblatex}
 
 
 % Footnote
-\usepackage[perpage, symbol*, stable, multiple]{footmisc}
-\setlength{\footnotemargin}{.6em}%
+\usepackage{perpage}
+\counterwithout*{footnote}{chapter}
+\MakePerPage{footnote}
+\renewcommand{\thefootnote}{%
+  \ifnum\value{footnote}<10 \fnsymbol{footnote}%
+  \else\arabic{footnote}\fi}
 
 \usepackage{fnpct}
 \setfnpct{add-punct-marks=:}
 \setfnpct{add-punct-marks=;}
 
-\include{fix-footnote-hyperlinks}
-\usepackage{footnotebackref}
+\usepackage[numberlinked=false]{footnotebackref}
+\deffootnote{0em}{0em}{%
+  \hyperref[\BackrefFootnoteTag]{\thefootnotemark}\hspace*{.5em}}
 
 \newenvironment{citazione}%
   {\begin{quotation}\small\ignorespaces}%
