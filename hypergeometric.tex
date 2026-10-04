@@ -50,7 +50,7 @@ natbib,ibidtracker=false]{biblatex}
 \addbibresource{bibliography.bib}
 
 \defbibheading{bibintoc}[\bibname]{%
-  \addchap*{\protect\phantomsection #1}%
+  \chapter*{\protect\phantomsection #1}%
   \markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}%
   \addcontentsline{toc}{chapter}{\tocEntry{#1}}%
 }
