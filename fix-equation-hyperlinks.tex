@@ -1,0 +1,51 @@
+% Load after breqn and before cleveref wraps its numbering command.
+\RequirePackage{etoolbox}
+\makeatletter
+\newcommand*{\breqn@patchfailed}{%
+  \PackageError{fix-equation-hyperlinks}{Cannot patch breqn equation numbering}
+    {Check whether breqn has changed its numbering implementation.}}
+
+% Update reference metadata now, but put the destination in the number box:
+% breqn collects grouped equations before placing them on the page.
+\newcommand*{\breqn@refstepcounter}[1]{%
+  \let\breqn@saved@raisedlink\Hy@raisedlink
+  \let\Hy@raisedlink\@gobble
+  \refstepcounter{#1}%
+  \let\Hy@raisedlink\breqn@saved@raisedlink}
+\newcommand*{\breqn@anchor}{%
+  \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}}
+\let\breqn@numberanchor\breqn@anchor
+\patchcmd{\eq@setnumber}
+  {\stepcounter{equation}}{\breqn@refstepcounter{equation}}
+  {}{\breqn@patchfailed}
+\patchcmd{\eq@setnumber}
+  {\next@label}{\breqn@numberanchor\next@label}
+  {}{\breqn@patchfailed}
+
+% dgroup resets the counter: include the parent number and subequation letter.
+\renewcommand*{\theHequation}{\theequation}
+
+% A group's number box is not printed when its children are numbered.
+% Place its destination at the first equation instead, and freeze the group's
+% reference data before the children overwrite it (including cleveref's data).
+\newcommand*{\breqn@grouplabel}[4]{%
+  \begingroup
+  \def\@currentlabel{#1}%
+  \def\@currentHref{#2}%
+  \def\cref@currentlabel{#3}%
+  % Keep the saved data: the label hook must not use the last child counter.
+  \let\@currentcounter\@empty
+  \breqn@anchor
+  #4%
+  \endgroup}
+\pretocmd{\grp@setnumber}
+  {\let\breqn@numberanchor\@empty}
+  {}{\breqn@patchfailed}
+\apptocmd{\grp@setnumber}{%
+  \protected@xdef\GRP@label{%
+    \noexpand\breqn@grouplabel
+      {\@currentlabel}{\@currentHref}{\cref@currentlabel}%
+      {\unexpanded\expandafter{\GRP@label}}}%
+  \let\breqn@numberanchor\breqn@anchor
+}{}{\breqn@patchfailed}
+\makeatother
