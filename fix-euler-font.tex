@@ -1,3 +1,7 @@
+% Restore eulervm glyph positions after flexisym loads its Computer Modern map.
+% Keep flexisym declarations so breqn can still break equations.
+
+% Euler capitals and digits live in the letters font.
 \DeclareFlexSymbol{\Gamma}  {Var}{latin}{00}
 \DeclareFlexSymbol{\Delta}  {Var}{latin}{01}
 \DeclareFlexSymbol{\Theta}  {Var}{latin}{02}
@@ -19,3 +23,20 @@
 \DeclareFlexSymbol{7}{Var}{latin}{37}
 \DeclareFlexSymbol{8}{Var}{latin}{38}
 \DeclareFlexSymbol{9}{Var}{latin}{39}
+
+% Euler has no separate variant rho or final sigma glyphs (as in eulervm).
+\let\varrho\rho
+\let\varsigma\sigma
+
+% Euler operators and delimiters use its symbols font, not the text font.
+\DeclareFlexSymbol{+}{Bin}{OMS}{AB}
+\DeclareFlexSymbol{:}{Rel}{OMS}{BA}
+\DeclareFlexSymbol{\colon}{Pun}{OMS}{BA}
+\DeclareFlexSymbol{\infty}{Ord}{del}{99}
+\DeclareFlexDelimiter{(}{DeL}{del}{00}{OMS}{A8}
+\DeclareFlexDelimiter{)}{DeR}{del}{01}{OMS}{A9}
+\DeclareFlexDelimiter{[}{DeL}{del}{02}{OMS}{DB}
+\DeclareFlexDelimiter{]}{DeR}{del}{03}{OMS}{DD}
+
+% flexisym delays its own equals-sign definition until begin-document.
+\AtBeginDocument{\DeclareFlexSymbol{=}{Rel}{OMS}{BD}}
