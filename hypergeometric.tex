@@ -49,6 +49,12 @@ natbib,ibidtracker=false]{biblatex}
 
 \addbibresource{bibliography.bib}
 
+\defbibheading{bibintoc}[\bibname]{%
+  \chapter*{\protect\phantomsection #1}%
+  \markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}%
+  \addcontentsline{toc}{chapter}{\tocEntry{#1}}%
+}
+
 % ClassicThesis
 \usepackage[pdfspacing,
   eulerchapternumbers,
@@ -56,7 +62,7 @@ natbib,ibidtracker=false]{biblatex}
   eulermath,
   beramono,
   %style=arsclassica,
-  parts,
+  parts=false,
   floatperchapter]{classicthesis}
 
 
