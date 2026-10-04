@@ -18,3 +18,11 @@
 
 
 *.DS_Store
+
+# latexmk backups after failed builds
+*-SAVE-ERROR
+
+# automatically-generated asymptote files
+hypergeometric-*.asy
+hypergeometric-*.tex
+hypergeometric-*_0.pdf
